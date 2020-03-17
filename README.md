@@ -39,10 +39,19 @@ To adapt this demo to your own Husky, you may need to clone the [husky_cartograp
 
   ![Husky World Map](husky_cartographer.png)
 
-  7. To save the generated map, you can run the map_saver utility:
+  7. When running as an online node, Cartographer doesn’t know when your bag (or sensor input) ends so you need to use the exposed services to explicitly finish the current trajectory and make Cartographer serialize its current state:
 
-     `rosrun map_server map_saver -f <filename>`
+  ```
+# Finish the first trajectory. No further data will be accepted on it.
+rosservice call /finish_trajectory 0
 
+# Ask Cartographer to serialize its current state.
+# (press tab to quickly expand the parameter syntax)
+rosservice call /write_state "{filename:  '${HOME}/Downloads/b3-2016-04-05-14-14-00.bag.pbstream'}"
+```
+
+
+8. To use the map, modify the content of the husky_cartographer_localization.launch to point to the location of your pbstream file and then launch.
 #### Tuning Cartographer
 
 To tune Cartographer for low latency SLAM, edit the *husky.lua* configuration file found in the *husky_cartographer_navigation/config* directory.
