@@ -47,7 +47,7 @@ rosservice call /finish_trajectory 0
 
 # Ask Cartographer to serialize its current state.
 # (press tab to quickly expand the parameter syntax)
-rosservice call /write_state "{filename:  '${HOME}/Downloads/b3-2016-04-05-14-14-00.bag.pbstream'}"
+rosservice call /write_state "{filename:  '${HOME}/husky_playpen.pbstream'}"
 ```
 
 
