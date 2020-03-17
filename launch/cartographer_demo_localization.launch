@@ -16,7 +16,9 @@
 
 <launch>
 
-  <!-- Launch first instance of ekf_localization for fusion of continuous sources (wheel odom + IMU)
+  <arg name="load_state_filename" default="$(find husky_cartographer_navigation)/indoor_outdoor.pbstream"/>
+
+    <!-- Launch first instance of ekf_localization for fusion of continuous sources (wheel odom + IMU)
   Output on /odometry/filtered_odom -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_odom_localization">
     <rosparam command="load" file="$(find fuse_localization)/config/ekf_localization_odom_sim.yaml" />
@@ -25,23 +27,19 @@
     <remap from="/odometry/filtered" to="/odometry/filtered_odom" />
   </node>
 
-  <!-- Run Cartographer Node -->
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
-          -configuration_directory
-              $(find husky_cartographer_navigation)/config
-          -configuration_basename husky.lua"
+          -configuration_directory $(find husky_cartographer_navigation)/config
+          -configuration_basename husky_cartographer_localization.lua
+          -load_state_filename $(arg load_state_filename)"
       output="screen">
-    <remap from="imu" to="imu/data_raw" />
-    <!--remap from="odom" to="odometry/filtered_odom" />
-    <remap from="scan_1" to="/scan" />
-    <remap from="scan_2" to="/scan_rear" /-->
+      <remap from="imu" to="imu/data_raw" />
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
       type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
 
-  <!--- Run Move Base -->
+    <!--- Run Move Base -->
   <include file="$(find husky_navigation)/launch/move_base.launch" />
 
 </launch>
