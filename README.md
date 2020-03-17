@@ -39,7 +39,7 @@ To adapt this demo to your own Husky, you may need to clone the [husky_cartograp
 
   ![Husky World Map](husky_cartographer.png)
 
-  7. When running as an online node, Cartographer doesn’t know when your bag (or sensor input) ends so you need to use the exposed services to explicitly finish the current trajectory and make Cartographer serialize its current state:
+  7. When running as an online node, Cartographer doesn’t know when your bag (or sensor input) ends so you need to use the exposed services to explicitly finish the current trajectory and make Cartographer serialize its current state (which is the map to be used later for localization):
 
   ```
 # Finish the first trajectory. No further data will be accepted on it.
